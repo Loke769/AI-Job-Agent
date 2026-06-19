@@ -1,8 +1,2 @@
 Company,Role,Location,URL,Description
-Amazon,Data Engineer,Seattle,https://example.com,"Python SQL AWS Spark Kafka Airflow"
-Capital One,Data Engineer,Plano,https://example.com,"Python SQL Snowflake Airflow AWS Databricks"
-Walmart,Data Engineer,Dallas,https://example.com,"SQL Python Spark Azure Databricks"
-Cognizant,Data Engineer,Remote,https://example.com,"Python SQL AWS Glue Redshift S3"
-Tavant,Data Engineer,Remote,https://example.com,"Python SQL Kafka Spark Airflow"
-
-
+Sample Company,Data Engineer,Remote,https://example.com,Python SQL AWS Spark Airflow Databricks Snowflake
