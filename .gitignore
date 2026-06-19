@@ -1,0 +1,11 @@
+.venv/
+.idea/
+output/
+resumes/
+__pychache__/
+*.pyc
+# Experimental scripts
+scripts/job_reader.py
+scripts/job_collector.py
+scripts/data_engineer_collector.py
+scripts/cover_letter_generator.py
