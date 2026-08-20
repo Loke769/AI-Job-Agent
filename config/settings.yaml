@@ -1,0 +1,126 @@
+# AI Job Agent — Settings (works for any role: engineering, data, product, design, marketing, etc.)
+# All values can be overridden by .env or CLI flags (--target-roles, --dry-run, etc.)
+
+profile:
+  resume_path: "resumes/master_resume.docx"
+  parsed_profile: "resumes/profile.yaml"
+  name: "Alex Morgan"
+  email: "alex.morgan@example.com"
+  phone: "+1-555-010-0000"
+  location: "Remote, United States"
+  work_authorization: "US Citizen"  # or "H-1B", "OPT", "STEM-OPT", "Requires Sponsorship"
+  linkedin: "https://linkedin.com/in/alexmorgan"
+  github: "https://github.com/alexmorgan"
+  website: ""
+
+preferences:
+  # Works for every role — set any titles you want to target
+  target_roles:
+    - "Software Engineer"
+    - "Backend Engineer"
+    - "Data Engineer"
+    - "Data Scientist"
+    - "Product Manager"
+    - "UX Designer"
+    - "Marketing Manager"
+  target_locations:
+    - "Remote"
+    - "United States"
+    - "New York"
+    - "San Francisco"
+  min_match_score: 50
+  strong_match_score: 75
+  salary_min: null
+  seniority: ["Entry", "Mid", "Senior"]
+  exclude_companies: []
+  exclude_keywords: ["intern"]  # add "manager", "director" etc if you only want IC roles
+  sponsorship_filter: false
+
+collector:
+  max_jobs_per_source: 15
+  request_timeout: 12
+  user_agent: "AI-Job-Agent/1.0 (+https://github.com/Loke769/AI-Job-Agent)"
+  sources_file: "config/sources.yaml"
+  output_csv: "jobs/jobs.csv"
+
+matching:
+  # Expanded master list covering many professions — edit to fit your field
+  skills_master_list:
+    # tech
+    - python
+    - java
+    - javascript
+    - typescript
+    - react
+    - node
+    - sql
+    - nosql
+    - aws
+    - gcp
+    - azure
+    - docker
+    - kubernetes
+    - git
+    - linux
+    - jenkins
+    - github actions
+    - ci/cd
+    # data
+    - spark
+    - pyspark
+    - hadoop
+    - hive
+    - airflow
+    - dbt
+    - snowflake
+    - databricks
+    - kafka
+    - s3
+    - redshift
+    - bigquery
+    - glue
+    # product/design/business (kept for role-agnostic scoring via TF-IDF)
+    - product management
+    - agile
+    - scrum
+    - figma
+    - ux
+    - communication
+    - leadership
+    - tableau
+    - looker
+    - presto
+    - trino
+    - scala
+    - terraform
+    - prefect
+    - dagster
+  use_tfidf: true
+  tfidf_weight: 0.4
+  skill_weight: 0.6
+
+tailoring:
+  model: "gpt-4o-mini"
+  temperature: 0.4
+  max_tokens: 1200
+  keep_honest: true
+  output_dir: "output/tailored"
+
+apply:
+  dry_run: true        # if true, only generate receipts, don't actually submit
+  auto_approve: false  # if false, jobs go to approval queue first (human-in-the-loop)
+  max_applications_per_run: 25
+  delay_between_apps: 1.2
+  ats_timeout: 45000
+  tracker_path: "output/applications.csv"
+  receipts_dir: "output/receipts"
+  ats_enabled:
+    greenhouse: true
+    lever: true
+    ashby: true
+    workday: true
+    generic: true
+
+dashboard:
+  host: "0.0.0.0"
+  port: 8000

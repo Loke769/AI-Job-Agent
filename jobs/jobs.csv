@@ -1,2 +1,9 @@
 Company,Role,Location,URL,Description
-Sample Company,Data Engineer,Remote,https://example.com,Python SQL AWS Spark Airflow Databricks Snowflake
+Notion,Product Manager,"New York, NY",https://jobs.ashbyhq.com/notion/jkl,"Product management, agile, scrum, communication, leadership, UX. Drive roadmap for collaborative tools."
+Databricks,Senior Data Engineer,"San Francisco, CA",https://boards.greenhouse.io/databricks/jobs/456,"Looking for PySpark, Spark, Databricks, AWS, Terraform, Delta Lake, Airflow. Optimize large-scale data platform."
+Shopify,Marketing Manager,"Remote, Canada",https://jobs.lever.co/shopify/def,"Marketing, communication, leadership, agile, SQL, tableau. Own growth and analytics for e-commerce."
+Netflix,Data Scientist,"Los Gatos, CA",https://jobs.lever.co/netflix/abc,"Python, SQL, bigquery, tableau, looker, communication. Build models for personalization and streaming analytics."
+Figma,Product Designer,Remote,https://boards.greenhouse.io/figma/jobs/321,"We seek Figma, UX, UI, agile, communication, leadership. Craft design systems and collaborate with engineering and product."
+Linear,Frontend Engineer,Remote,https://jobs.ashbyhq.com/linear/xyz,"React, TypeScript, JavaScript, Node, CI/CD, Git. Build fast, delightful interfaces."
+Snowflake,Data Engineer,"Remote, USA",https://boards.greenhouse.io/snowflake/jobs/123,"We need Python, SQL, AWS, Spark, Snowflake, Kafka, Airflow, dbt, Docker. Build scalable ELT pipelines on AWS S3 and Snowflake."
+Stripe,Software Engineer (Backend),"San Francisco, CA",https://boards.greenhouse.io/stripe/jobs/789,"Build backend services with Python, Java, AWS, Kubernetes, Docker, CI/CD, SQL. Own APIs and data pipelines for payments."

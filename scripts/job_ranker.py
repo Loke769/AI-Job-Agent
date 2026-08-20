@@ -1,85 +1,31 @@
-from docx import Document
-import pandas as pd
+#!/usr/bin/env python3
+"""
+Job Ranker —  skill + TF-IDF scorer
+Backward compatible: still outputs output/ranked_jobs.xlsx with same columns plus extras.
+"""
+import pathlib
+import sys
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
-# Read resume
-doc = Document("../resumes/master_resume.docx")
+from src.config import ensure_dirs
+from src.resume_parser import load_profile
+from src.matching.scorer import load_jobs_from_csv, score_jobs, save_ranked
 
-resume_text = ""
+def main():
+    ensure_dirs()
+    print("=== Job Ranker (AI Job Agent scoring) ===")
+    profile = load_profile()
+    print(f"Resume: {profile.name} — skills {profile.skills}")
+    jobs = load_jobs_from_csv("jobs/jobs.csv")
+    if not jobs:
+        print("No jobs found in jobs/jobs.csv — running collector...")
+        from src.job_collector.aggregator import collect_jobs, save_jobs_csv
+        jobs = collect_jobs()
+        save_jobs_csv(jobs)
+    scored = score_jobs(jobs, profile.raw_text, profile.skills)
+    xlsx, df = save_ranked(scored)
+    print(df[["Company","Role","Match Score","Matched Skills","Missing Skills","Decision"]].head(10).to_string(index=False))
+    print(f"\nRanked {len(scored)} jobs -> {xlsx}")
 
-for para in doc.paragraphs:
-    resume_text += para.text.lower() + " "
-
-# Skills to check
-skills_master_list = [
-    "python",
-    "sql",
-    "aws",
-    "spark",
-    "pyspark",
-    "airflow",
-    "databricks",
-    "snowflake",
-    "kafka",
-    "docker",
-    "kubernetes",
-    "java",
-    "linux",
-    "git",
-    "jenkins",
-    "redshift",
-    "s3",
-    "glue"
-]
-
-# Find skills from resume
-resume_skills = []
-
-for skill in skills_master_list:
-    if skill in resume_text:
-        resume_skills.append(skill)
-
-print("Resume Skills:")
-print(resume_skills)
-print()
-
-# Read jobs
-df = pd.read_csv("../jobs/jobs.csv")
-
-scores = []
-matched_skills_list = []
-missing_skills_list = []
-
-for _, row in df.iterrows():
-    description = str(row["Description"]).lower()
-
-    matched_skills = []
-    missing_skills = []
-
-    for skill in skills_master_list:
-        if skill in description and skill in resume_skills:
-            matched_skills.append(skill)
-        elif skill in description and skill not in resume_skills:
-            missing_skills.append(skill)
-
-    total_relevant = len(matched_skills) + len(missing_skills)
-
-    if total_relevant == 0:
-        score = 0
-    else:
-        score = (len(matched_skills) / total_relevant) * 100
-
-    scores.append(round(score, 2))
-    matched_skills_list.append(", ".join(matched_skills))
-    missing_skills_list.append(", ".join(missing_skills))
-
-df["Match Score"] = scores
-df["Matched Skills"] = matched_skills_list
-df["Missing Skills"] = missing_skills_list
-
-df = df.sort_values(by="Match Score", ascending=False)
-
-df.to_excel("../output/ranked_jobs.xlsx", index=False)
-
-print(df[["Company", "Role", "Match Score", "Matched Skills", "Missing Skills"]])
-print()
-print("Ranked jobs saved to output/ranked_jobs.xlsx")
+if __name__ == "__main__":
+    main()

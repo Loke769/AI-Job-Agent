@@ -1,0 +1,77 @@
+# Career page watchlist — curated starter set (scale to thousands)
+# Each entry is a real Greenhouse / Lever / Ashby board with a public JSON API.
+#
+# ATS types:
+#   greenhouse -> https://boards-api.greenhouse.io/v1/boards/{token}/jobs
+#   lever      -> https://api.lever.co/v0/postings/{token}?mode=json
+#   ashby      -> https://api.ashbyhq.com/posting-api/job-board/{token}
+#
+# Add companies for any role/industry — the collector will loop through all.
+# Tip: Find Greenhouse token = part after boards.greenhouse.io/<token>
+# Tip: Find Lever token     = lever.co/company/<token>
+
+greenhouse:
+  - token: databricks
+    company: Databricks
+  - token: openai
+    company: OpenAI
+  - token: coinbase
+    company: Coinbase
+  - token: robinhood
+    company: Robinhood
+  - token: snowflake
+    company: Snowflake
+  - token: stripe
+    company: Stripe
+  - token: figma
+    company: Figma
+  - token: airbnb
+    company: Airbnb
+  - token: lyft
+    company: Lyft
+  - token: doordash
+    company: DoorDash
+  - token: duolingo
+    company: Duolingo
+  - token: mongodb
+    company: MongoDB
+  - token: elastic
+    company: Elastic
+  - token: hashicorp
+    company: HashiCorp
+  - token: datadog
+    company: Datadog
+
+lever:
+  - token: netflix
+    company: Netflix
+  - token: spotify
+    company: Spotify
+  - token: uber
+    company: Uber
+  - token: shopify
+    company: Shopify
+  - token: twilio
+    company: Twilio
+  - token: github
+    company: GitHub
+  - token: atlassian
+    company: Atlassian
+  - token: leverdemo
+    company: Lever Demo
+  - token: affirm
+    company: Affirm
+  - token: squarespace
+    company: Squarespace
+
+ashby:
+  - token: linear
+    company: Linear
+  - token: notion
+    company: Notion
+  - token: scale
+    company: Scale AI
+  - token: deepset
+    company: deepset
+  - token: cursor
+    company: Cursor

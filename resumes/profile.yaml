@@ -1,0 +1,63 @@
+name: Alex Morgan
+email: alex.morgan@example.com
+phone: +1-555-010-0000
+location: Remote, United States
+linkedin: https://linkedin.com/in/alexmorgan
+github: https://github.com/alexmorgan
+website: ""
+summary: Data Engineer with 4+ years building scalable batch and streaming pipelines on AWS/GCP.
+skills:
+- python
+- sql
+- aws
+- spark
+- pyspark
+- airflow
+- databricks
+- snowflake
+- kafka
+- docker
+- kubernetes
+- java
+- scala
+- linux
+- git
+- jenkins
+- redshift
+- s3
+- glue
+- dbt
+- bigquery
+- gcp
+- terraform
+- hadoop
+- hive
+- presto
+raw_text: |
+  Alex Morgan — Data Engineer
+  Email: alex.morgan@example.com | Phone: +1-555-010-0000 | Remote, United States
+  LinkedIn: linkedin.com/in/alexmorgan | GitHub: github.com/alexmorgan
+
+  SUMMARY
+  Data Engineer with 4+ years building scalable batch and streaming pipelines on AWS and GCP.
+  Expert in Python, SQL, Spark/PySpark, Airflow, Databricks, Snowflake, Kafka, Docker & Kubernetes.
+  Passionate about data quality, cost optimization, and enabling analytics.
+
+  SKILLS
+  Python, SQL, AWS (S3, Glue, Redshift, Lambda), Spark, PySpark, Airflow, Databricks, Snowflake,
+  Kafka, Docker, Kubernetes, Java, Scala, Linux, Git, Jenkins, dbt, BigQuery, Terraform, Hadoop, Hive, Presto
+
+  EXPERIENCE
+  Data Engineer — Nova Analytics (2022-Present, Remote)
+  - Built ELT pipelines processing 2TB/day with Airflow + Spark on AWS, reduced runtime 40%
+  - Migrated warehouse from on-prem to Snowflake + dbt, improved query performance 3x
+  - Implemented streaming ingestion with Kafka + S3 + Glue, enabled real-time dashboards
+  - Containerized jobs with Docker/Kubernetes, CI/CD via Jenkins & Git
+
+  Data Engineer — Bright Data Labs (2020-2022)
+  - Developed PySpark jobs on Databricks for log processing (500M events/day)
+  - Tuned Redshift and S3 partitioning, cut storage cost 25%
+  - Collaborated with analytics to define Looker/Tableau models
+
+  EDUCATION
+  B.S. Computer Science — State University (2016-2020)

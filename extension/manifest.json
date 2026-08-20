@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "AI Job Agent Auto-Apply",
+  "version": "2.0.0",
+  "description": "One-click auto-apply across Greenhouse/Lever/Ashby like AI Job Agent. Tailors resume and fills ATS forms.",
+  "permissions": ["activeTab", "storage", "scripting"],
+  "host_permissions": ["https://boards.greenhouse.io/*", "https://jobs.lever.co/*", "https://jobs.ashbyhq.com/*", "https://*.workday.com/*"],
+  "action": { "default_popup": "popup.html", "default_title": "AI Job Agent" },
+  "content_scripts": [{ "matches": ["https://boards.greenhouse.io/*", "https://jobs.lever.co/*", "https://jobs.ashbyhq.com/*"], "js": ["content.js"] }],
+  "background": { "service_worker": "background.js" }
+}
