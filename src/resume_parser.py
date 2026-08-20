@@ -7,7 +7,6 @@ from typing import List
 from .config import ROOT, get_settings, resolve_path
 from .models import ResumeProfile
 
-# Lazy imports for docx / pdf
 SKILL_ALIASES = {
     "py": "python",
     "postgres": "sql",
@@ -25,7 +24,6 @@ def extract_text_from_docx(path: pathlib.Path) -> str:
         from docx import Document
         doc = Document(str(path))
         text = "\n".join(p.text for p in doc.paragraphs)
-        # also tables
         for table in doc.tables:
             for row in table.rows:
                 text += "\n" + " | ".join(cell.text for cell in row.cells)
@@ -35,7 +33,6 @@ def extract_text_from_docx(path: pathlib.Path) -> str:
         return ""
 
 def extract_text_from_pdf(path: pathlib.Path) -> str:
-    # try pdfminer / PyPDF2 if available, else empty
     try:
         import PyPDF2
         reader = PyPDF2.PdfReader(str(path))
@@ -65,18 +62,15 @@ def parse_resume_file(path: str | pathlib.Path) -> str:
     elif suf in (".txt", ".md"):
         return extract_text_from_txt(p)
     else:
-        # try docx fallback
         return extract_text_from_docx(p)
 
 def detect_skills(text: str, master_list: List[str]) -> List[str]:
     low = text.lower()
     found = []
     for skill in master_list:
-        # word boundary-ish check
         pattern = r"\b" + re.escape(skill.lower()) + r"\b"
         if re.search(pattern, low):
             found.append(skill)
-        # alias
         for alias, canonical in SKILL_ALIASES.items():
             if canonical == skill and alias in low and skill not in found:
                 found.append(skill)
@@ -89,36 +83,40 @@ def load_profile() -> ResumeProfile:
     parsed_profile = profile_cfg.get("parsed_profile", "resumes/profile.yaml")
     master_list = cfg.get("matching", {}).get("skills_master_list", [])
 
-    # try yaml profile first if exists
     yaml_path = resolve_path(parsed_profile)
     if yaml_path.exists():
         try:
             data = yaml.safe_load(yaml_path.read_text(encoding="utf-8")) or {}
-            # ensure raw_text filled from resume if empty
             if not data.get("raw_text"):
                 data["raw_text"] = parse_resume_file(resume_path)
             if not data.get("skills") and data.get("raw_text"):
                 data["skills"] = detect_skills(data["raw_text"], master_list)
+            # infer first/last if not set
+            if not data.get("first_name") and data.get("name"):
+                parts = data["name"].split()
+                data["first_name"] = parts[0] if parts else ""
+                data["last_name"] = " ".join(parts[1:]) if len(parts)>1 else ""
             return ResumeProfile(**data)
         except Exception as e:
             print(f"[resume_parser] yaml profile load failed: {e}")
 
-    # parse docx
     raw_text = parse_resume_file(resume_path)
     if not raw_text:
-        # create a demo profile so pipeline still works
         print(f"[resume_parser] no resume found at {resume_path}, using demo profile")
         raw_text = DEMO_RESUME_TEXT
-        # also create a demo docx for future runs
         try:
             create_demo_docx(resolve_path(resume_path), raw_text)
         except Exception as e:
             print(f"demo docx creation failed: {e}")
 
     skills = detect_skills(raw_text, master_list)
-    # try to infer name/email from config
+    # infer names
+    name = profile_cfg.get("name", "Alex Morgan")
+    parts = name.split()
     return ResumeProfile(
-        name=profile_cfg.get("name", "Alex Morgan"),
+        name=name,
+        first_name=parts[0] if parts else "Alex",
+        last_name=" ".join(parts[1:]) if len(parts)>1 else "Morgan",
         email=profile_cfg.get("email", "alex.morgan@example.com"),
         phone=profile_cfg.get("phone", "+1-555-010-0000"),
         location=profile_cfg.get("location", "Remote, United States"),
@@ -176,18 +174,38 @@ def create_demo_docx(path: pathlib.Path, text: str):
         p.style = style
     doc.save(str(path))
     print(f"[resume_parser] demo resume created at {path}")
-    # also create yaml profile
     yaml_path = path.parent / "profile.yaml"
     if not yaml_path.exists():
         profile = {
             "name": "Alex Morgan",
+            "first_name": "Alex",
+            "last_name": "Morgan",
             "email": "alex.morgan@example.com",
             "phone": "+1-555-010-0000",
             "location": "Remote, United States",
+            "address_line1": "123 Main St",
+            "city": "San Francisco",
+            "state": "CA",
+            "zip_code": "94105",
+            "country": "United States",
             "linkedin": "https://linkedin.com/in/alexmorgan",
             "github": "https://github.com/alexmorgan",
+            "website": "",
             "summary": "Data Engineer with 4+ years building scalable pipelines.",
             "skills": ["python","sql","aws","spark","pyspark","airflow","databricks","snowflake","kafka","docker","kubernetes","java","scala","linux","git","jenkins","redshift","s3","glue","dbt","bigquery","gcp","terraform","hadoop","hive","presto"],
+            "work_authorization": "US Citizen",
+            "require_sponsorship": "No",
+            "visa_type": "",
+            "gender": "",
+            "ethnicity": "",
+            "veteran_status": "",
+            "disability_status": "",
+            "salary_expectation": "Open",
+            "notice_period": "2 weeks",
+            "education": [{"school": "State University", "degree": "B.S. Computer Science", "field": "Computer Science", "start": "2016", "end": "2020"}],
+            "experience": [{"company": "Nova Analytics", "title": "Data Engineer", "start": "2022", "end": "Present"}],
             "raw_text": text,
+            "gmail_connected": False,
+            "gmail_email": "",
         }
         yaml_path.write_text(yaml.safe_dump(profile, sort_keys=False), encoding="utf-8")
